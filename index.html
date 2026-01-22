@@ -111,13 +111,16 @@
                             <option value="yeezy">Yeezy</option>
                             <option value="nb">New Balance</option>
                             <option value="salomon">Salomon</option>
+                            <option value="ugg">UGG</option>
                             <option value="vans">Vans</option>
                             <option value="converse">Converse</option>
                             <option value="puma">Puma</option>
                             <option value="asics">Asics</option>
                             <option value="reebok">Reebok</option>
                             <option value="hoka">Hoka</option>
+                            <option value="timberland">Timberland</option>
                             <option value="dr_martens">Dr. Martens</option>
+                            <option value="balenciaga">Balenciaga</option>
                             <option value="crocs">Crocs</option>
                         </select>
                     </div>
@@ -152,12 +155,23 @@
         }
         themeToggle.addEventListener('click', () => updateTheme(!html.classList.contains('dark')));
 
-        // SIZING LOGIC
+        // SIZING LOGIC (Offsets par rapport à Nike)
         const brands = {
-            "nike": { offset: 0 }, "adidas": { offset: 0.5 }, "yeezy": { offset: 1.0 },
-            "nb": { offset: 0 }, "salomon": { offset: 0.5 }, "vans": { offset: -0.5 },
-            "converse": { offset: -1.0 }, "puma": { offset: -0.5 }, "asics": { offset: 0.5 },
-            "reebok": { offset: -0.5 }, "hoka": { offset: 0.5 }, "dr_martens": { offset: -1.0 },
+            "nike": { offset: 0 }, 
+            "adidas": { offset: 0.5 }, 
+            "yeezy": { offset: 1.0 },
+            "nb": { offset: 0 }, 
+            "salomon": { offset: 0.5 }, 
+            "ugg": { offset: -0.5 }, // UGG taille un peu grand
+            "vans": { offset: -0.5 },
+            "converse": { offset: -1.0 }, 
+            "puma": { offset: -0.5 }, 
+            "asics": { offset: 0.5 },
+            "reebok": { offset: -0.5 }, 
+            "hoka": { offset: 0.5 }, 
+            "timberland": { offset: -0.5 },
+            "dr_martens": { offset: -1.0 },
+            "balenciaga": { offset: 0.5 },
             "crocs": { offset: -1.0 }
         };
 
