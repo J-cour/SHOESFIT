@@ -26,7 +26,6 @@
             transition: background-color 0.5s ease;
         }
 
-        /* Background Animé */
         .mesh-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -96,7 +95,7 @@
                 <span class="text-blue-600 dark:text-blue-400">Gardez le confort.</span>
             </h1>
             <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto">
-                Le comparateur haute précision pour sneakers et chaussures de ville.
+                Le comparateur haute précision pour sneakers, sandales et boots.
             </p>
         </div>
 
@@ -111,6 +110,7 @@
                             <option value="yeezy">Yeezy</option>
                             <option value="nb">New Balance</option>
                             <option value="salomon">Salomon</option>
+                            <option value="birkenstock">Birkenstock</option>
                             <option value="ugg">UGG</option>
                             <option value="vans">Vans</option>
                             <option value="converse">Converse</option>
@@ -139,7 +139,6 @@
     </main>
 
     <script>
-        // THEME LOGIC
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const html = document.documentElement;
@@ -155,14 +154,14 @@
         }
         themeToggle.addEventListener('click', () => updateTheme(!html.classList.contains('dark')));
 
-        // SIZING LOGIC (Offsets par rapport à Nike)
         const brands = {
             "nike": { offset: 0 }, 
             "adidas": { offset: 0.5 }, 
             "yeezy": { offset: 1.0 },
             "nb": { offset: 0 }, 
             "salomon": { offset: 0.5 }, 
-            "ugg": { offset: -0.5 }, // UGG taille un peu grand
+            "birkenstock": { offset: -1.0 }, // Taille très grand
+            "ugg": { offset: -0.5 },
             "vans": { offset: -0.5 },
             "converse": { offset: -1.0 }, 
             "puma": { offset: -0.5 }, 
