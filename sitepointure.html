@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShoesFit | Premium Sizing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        accent: '#3b82f6',
+                        glass: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Background Animé */
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+        .dark .mesh-bg { background: #020617; }
+
+        .orb {
+            position: absolute;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: move 20s infinite alternate;
+        }
+        .orb-1 { background: #3b82f6; top: -10%; left: -10%; }
+        .orb-2 { background: #8b5cf6; bottom: -10%; right: -10%; animation-delay: -5s; }
+        
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 100px) scale(1.1); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .result-card {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="dark:text-white text-slate-900 min-h-screen">
+
+    <div class="mesh-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="max-w-6xl mx-auto p-8 flex justify-between items-center">
+        <div class="text-3xl font-extrabold tracking-tighter italic bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
+            SHOESFIT
+        </div>
+        <button id="themeToggle" class="p-4 rounded-full glass-card hover:scale-110 transition-transform shadow-lg">
+            <span id="themeIcon" class="text-xl">🌙</span>
+        </button>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-10">
+        <div class="text-center mb-16">
+            <h1 class="text-6xl md:text-7xl font-extrabold mb-6 tracking-tight">
+                Changez de marque,<br>
+                <span class="text-blue-600 dark:text-blue-400">Gardez le confort.</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto">
+                Le comparateur haute précision pour sneakers et chaussures de ville.
+            </p>
+        </div>
+
+        <div class="glass-card rounded-[3rem] p-8 md:p-12 mb-16 relative overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                <div class="group">
+                    <label class="text-xs font-black uppercase tracking-[0.2em] text-blue-500 mb-4 block ml-2">Marque Actuelle</label>
+                    <div class="relative">
+                        <select id="brandIn" class="w-full bg-white/50 dark:bg-black/20 border-2 border-transparent focus:border-blue-500 rounded-3xl p-6 text-2xl font-bold appearance-none transition-all outline-none cursor-pointer">
+                            <option value="nike">Nike / Jordan</option>
+                            <option value="adidas">Adidas</option>
+                            <option value="yeezy">Yeezy</option>
+                            <option value="nb">New Balance</option>
+                            <option value="salomon">Salomon</option>
+                            <option value="vans">Vans</option>
+                            <option value="converse">Converse</option>
+                            <option value="puma">Puma</option>
+                            <option value="asics">Asics</option>
+                            <option value="reebok">Reebok</option>
+                            <option value="hoka">Hoka</option>
+                            <option value="dr_martens">Dr. Martens</option>
+                            <option value="crocs">Crocs</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-black uppercase tracking-[0.2em] text-blue-500 mb-4 block ml-2">Ma Pointure (EU)</label>
+                    <select id="sizeIn" class="w-full bg-white/50 dark:bg-black/20 border-2 border-transparent focus:border-blue-500 rounded-3xl p-6 text-2xl font-bold appearance-none transition-all outline-none cursor-pointer">
+                        </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="results" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+    </main>
+
+    <script>
+        // THEME LOGIC
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        function updateTheme(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                themeIcon.innerText = '☀️';
+            } else {
+                html.classList.remove('dark');
+                themeIcon.innerText = '🌙';
+            }
+        }
+        themeToggle.addEventListener('click', () => updateTheme(!html.classList.contains('dark')));
+
+        // SIZING LOGIC
+        const brands = {
+            "nike": { offset: 0 }, "adidas": { offset: 0.5 }, "yeezy": { offset: 1.0 },
+            "nb": { offset: 0 }, "salomon": { offset: 0.5 }, "vans": { offset: -0.5 },
+            "converse": { offset: -1.0 }, "puma": { offset: -0.5 }, "asics": { offset: 0.5 },
+            "reebok": { offset: -0.5 }, "hoka": { offset: 0.5 }, "dr_martens": { offset: -1.0 },
+            "crocs": { offset: -1.0 }
+        };
+
+        const brandIn = document.getElementById('brandIn');
+        const sizeIn = document.getElementById('sizeIn');
+        const results = document.getElementById('results');
+
+        function init() {
+            let options = "";
+            for (let i = 36; i <= 48; i += 0.5) {
+                options += `<option value="${i}">${i.toString().replace('.', ',')}</option>`;
+            }
+            sizeIn.innerHTML = options;
+            sizeIn.value = "42";
+            calculate();
+        }
+
+        function calculate() {
+            const baseSize = parseFloat(sizeIn.value);
+            const baseBrand = brandIn.value;
+            const baseOffset = brands[baseBrand].offset;
+
+            results.innerHTML = '';
+
+            Object.keys(brands).forEach((brand, index) => {
+                if (brand !== baseBrand) {
+                    let targetSize = baseSize + (brands[brand].offset - baseOffset);
+                    targetSize = Math.round(targetSize * 2) / 2;
+
+                    const card = document.createElement('div');
+                    card.className = `glass-card p-8 rounded-[2.5rem] text-center result-card`;
+                    card.style.animationDelay = `${index * 0.05}s`;
+                    card.innerHTML = `
+                        <p class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-3">${brand.replace('_', ' ')}</p>
+                        <p class="text-4xl font-extrabold">${targetSize.toString().replace('.', ',')}</p>
+                    `;
+                    results.appendChild(card);
+                }
+            });
+        }
+
+        brandIn.addEventListener('change', calculate);
+        sizeIn.addEventListener('change', calculate);
+        init();
+    </script>
+</body>
+</html>
